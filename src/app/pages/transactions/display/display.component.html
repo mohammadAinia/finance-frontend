@@ -4,14 +4,15 @@
             <div class="flex justify-content-end mb-3">
                 <p-button label="إضافة عملية مالية" icon="pi pi-plus" (onClick)="showDialog()"></p-button>
             </div>
-            <p-table 
-                [value]="transactionService.transactions()" 
-                [paginator]="true" 
-                [rows]="5" 
-                [tableStyle]="{ 'min-width': '50rem' }"
-                [rowsPerPageOptions]="[5, 10, 20]"
-                styleClass="p-datatable-striped p-datatable-sm"
-            >
+<p-table
+  [value]="transactionService.transactions()"
+  [paginator]="true"
+  [rows]="5"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  responsiveLayout="stack"
+  breakpoint="768px"
+  styleClass="p-datatable-striped p-datatable-sm mobile-table"
+>
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="Id">رقم العملية <p-sortIcon field="Id"></p-sortIcon></th>
