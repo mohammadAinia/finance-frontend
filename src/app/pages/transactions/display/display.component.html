@@ -1,0 +1,90 @@
+<div class="grid">
+    <div class="col-12">
+        <p-card header="سجل العمليات المالية" styleClass="shadow-2 border-round">
+            <div class="flex justify-content-end mb-3">
+                <p-button label="إضافة عملية مالية" icon="pi pi-plus" (onClick)="showDialog()"></p-button>
+            </div>
+            <p-table 
+                [value]="transactionService.transactions()" 
+                [paginator]="true" 
+                [rows]="5" 
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                styleClass="p-datatable-striped p-datatable-sm"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="Id">رقم العملية <p-sortIcon field="Id"></p-sortIcon></th>
+                        <th pSortableColumn="Description">الوصف <p-sortIcon field="Description"></p-sortIcon></th>
+                        <th pSortableColumn="Amount">المبلغ <p-sortIcon field="Amount"></p-sortIcon></th>
+                        <th pSortableColumn="TransactionDate">التاريخ <p-sortIcon field="TransactionDate"></p-sortIcon></th>
+                        <th>التصنيف</th>
+                        <th>النوع</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-transaction>
+                    <tr>
+                        <td>#{{ transaction.Id }}</td>
+                        <td class="font-medium text-700">{{ transaction.Description }}</td>
+                        <td class="font-bold">{{ transaction.Amount | currency:'SAR' }}</td>
+                        <td>{{ transaction.TransactionDate | date:'yyyy-MM-dd' }}</td>
+                        <td>{{ transaction.Category }}</td>
+                        <td>
+                            <p-tag 
+                                [value]="transaction.Type === 'income' ? 'دخل' : 'مصروف'" 
+                                [severity]="getSeverity(transaction.Type)">
+                            </p-tag>
+                        </td>
+                        <td>
+                            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (onClick)="editTransaction(transaction)"></p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteTransaction(transaction.Id)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6" class="text-center p-4">لا توجد عمليات مالية مسجلة حالياً.</td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </p-card>
+    </div>
+</div>
+
+<p-dialog header="تفاصيل العملية المالية" [(visible)]="displayDialog" [modal]="true" [style]="{width: '450px'}" styleClass="p-fluid">
+    <form [formGroup]="transactionForm">
+        <div class="field mb-3">
+            <label for="description" class="font-bold">الوصف</label>
+            <input type="text" pInputText id="description" formControlName="description" placeholder="مثال: فاتورة كهرباء" />
+        </div>
+
+        <div class="field mb-3">
+            <label for="amount" class="font-bold">المبلغ</label>
+            <p-inputNumber id="amount" formControlName="amount" mode="currency" currency="SAR" locale="en-US"></p-inputNumber>
+        </div>
+
+        <div class="field mb-3">
+            <label for="date" class="font-bold">التاريخ</label>
+            <p-datePicker id="date" formControlName="date" [showIcon]="true" appendTo="body"></p-datePicker>
+        </div>
+
+        <div class="grid">
+            <div class="col-6 field mb-3">
+                <label for="type" class="font-bold">النوع</label>
+                <p-select id="type" [options]="typeOptions" formControlName="type" optionLabel="label" optionValue="value" appendTo="body"></p-select>
+            </div>
+            <div class="col-6 field mb-3">
+                <label for="category" class="font-bold">التصنيف</label>
+                <p-select id="category" [options]="categoryOptions" formControlName="category" optionLabel="label" optionValue="value" appendTo="body"></p-select>
+            </div>
+        </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button label="إلغاء" icon="pi pi-times" [text]="true" severity="secondary" (onClick)="displayDialog = false"></p-button>
+        <p-button label="حفظ" icon="pi pi-check" [disabled]="transactionForm.invalid" (onClick)="saveTransaction()"></p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,71 @@
+<div class="grid">
+    
+    <div class="col-12 md:col-4">
+        <p-card styleClass="shadow-2 border-round">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">الرصيد الحالي</span>
+                    <div class="text-900 font-bold text-2xl">{{ transactionService.totalBalance() | currency:'SAR' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                    <i class="pi pi-wallet text-blue-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-green-500 font-medium">+5% </span>
+            <span class="text-500">مقارنة بالشهر الماضي</span>
+        </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+        <p-card styleClass="shadow-2 border-round">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">إجمالي الدخل</span>
+                    <div class="text-900 font-bold text-2xl">{{ transactionService.totalIncome() | currency:'SAR' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-green-100 border-round" style="width:2.5rem;height:2.5rem">
+                    <i class="pi pi-arrow-up-right text-green-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-green-500 font-medium">+12% </span>
+            <span class="text-500">مقارنة بالشهر الماضي</span>
+        </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+        <p-card styleClass="shadow-2 border-round">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">إجمالي المصروفات</span>
+                    <div class="text-900 font-bold text-2xl">{{ transactionService.totalExpenses() | currency:'SAR' }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-red-100 border-round" style="width:2.5rem;height:2.5rem">
+                    <i class="pi pi-arrow-down-right text-red-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-red-500 font-medium">+2% </span>
+            <span class="text-500">مقارنة بالشهر الماضي</span>
+        </p-card>
+    </div>
+
+</div>
+
+<div class="grid mt-4">
+    
+    <div class="col-12 md:col-6">
+        <p-card header="توزيع المصروفات" styleClass="shadow-2 border-round h-full">
+            <div class="flex justify-content-center">
+                <p-chart type="doughnut" [data]="chartData" [options]="chartOptions" width="300px" height="300px"></p-chart>
+            </div>
+        </p-card>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <p-card header="نظرة عامة على التدفق المالي عبر الزمن" styleClass="shadow-2 border-round h-full">
+            <div class="flex justify-content-center w-full" style="min-height: 300px;">
+                <p-chart type="line" [data]="lineChartData" [options]="lineChartOptions" width="100%" height="300px"></p-chart>
+            </div>
+        </p-card>
+    </div>
+
+</div>
