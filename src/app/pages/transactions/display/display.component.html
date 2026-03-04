@@ -1,16 +1,17 @@
 <div class="grid">
     <div class="col-12">
-        <p-card header="سجل العمليات المالية" styleClass="shadow-2 border-round">
-            <div class="flex justify-content-end mb-3">
-                <p-button label="إضافة عملية مالية" icon="pi pi-plus" (onClick)="showDialog()"></p-button>
+        <p-card header="سجل العمليات المالية" styleClass="premium-card">
+            <div class="flex justify-content-end mb-4">
+                <p-button label="إضافة عملية مالية" icon="pi pi-plus" styleClass="premium-btn" (onClick)="showDialog()"></p-button>
             </div>
+            
             <p-table 
                 [value]="transactionService.transactions()" 
                 [paginator]="true" 
                 [rows]="5" 
                 [tableStyle]="{ 'min-width': '50rem' }"
                 [rowsPerPageOptions]="[5, 10, 20]"
-                styleClass="p-datatable-striped p-datatable-sm"
+                styleClass="premium-table p-datatable-sm"
             >
                 <ng-template pTemplate="header">
                     <tr>
@@ -20,15 +21,15 @@
                         <th pSortableColumn="TransactionDate">التاريخ <p-sortIcon field="TransactionDate"></p-sortIcon></th>
                         <th>التصنيف</th>
                         <th>النوع</th>
-                    </tr>
+                        <th style="width: 120px; text-align: center;">الإجراءات</th> </tr>
                 </ng-template>
 
                 <ng-template pTemplate="body" let-transaction>
                     <tr>
-                        <td>#{{ transaction.Id }}</td>
-                        <td class="font-medium text-700">{{ transaction.Description }}</td>
-                        <td class="font-bold">{{ transaction.Amount | currency:'SAR' }}</td>
-                        <td>{{ transaction.TransactionDate | date:'yyyy-MM-dd' }}</td>
+                        <td class="text-gray-400">#{{ transaction.Id }}</td>
+                        <td class="font-medium text-white">{{ transaction.Description }}</td>
+                        <td class="font-bold text-blue-300">{{ transaction.Amount | currency:'SAR' }}</td>
+                        <td class="text-gray-400">{{ transaction.TransactionDate | date:'yyyy-MM-dd' }}</td>
                         <td>{{ transaction.Category }}</td>
                         <td>
                             <p-tag 
@@ -36,7 +37,7 @@
                                 [severity]="getSeverity(transaction.Type)">
                             </p-tag>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (onClick)="editTransaction(transaction)"></p-button>
                             <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteTransaction(transaction.Id)"></p-button>
                         </td>
@@ -45,7 +46,7 @@
 
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="6" class="text-center p-4">لا توجد عمليات مالية مسجلة حالياً.</td>
+                        <td colspan="7" class="text-center p-5 text-gray-500 font-medium">لا توجد عمليات مالية مسجلة حالياً.</td>
                     </tr>
                 </ng-template>
 
@@ -54,37 +55,39 @@
     </div>
 </div>
 
-<p-dialog header="تفاصيل العملية المالية" [(visible)]="displayDialog" [modal]="true" [style]="{width: '450px'}" styleClass="p-fluid">
+<p-dialog header="تفاصيل العملية المالية" [(visible)]="displayDialog" [modal]="true" [style]="{width: '450px'}" styleClass="premium-dialog p-fluid">
     <form [formGroup]="transactionForm">
-        <div class="field mb-3">
-            <label for="description" class="font-bold">الوصف</label>
-            <input type="text" pInputText id="description" formControlName="description" placeholder="مثال: فاتورة كهرباء" />
+        <div class="field mb-4">
+            <label for="description" class="font-semibold text-gray-300 mb-2 block">الوصف</label>
+            <input type="text" pInputText id="description" formControlName="description" placeholder="مثال: فاتورة كهرباء" class="premium-input" />
         </div>
 
-        <div class="field mb-3">
-            <label for="amount" class="font-bold">المبلغ</label>
-            <p-inputNumber id="amount" formControlName="amount" mode="currency" currency="SAR" locale="en-US"></p-inputNumber>
+        <div class="field mb-4">
+            <label for="amount" class="font-semibold text-gray-300 mb-2 block">المبلغ</label>
+            <p-inputNumber id="amount" formControlName="amount" mode="currency" currency="SAR" locale="en-US" styleClass="premium-input"></p-inputNumber>
         </div>
 
-        <div class="field mb-3">
-            <label for="date" class="font-bold">التاريخ</label>
-            <p-datePicker id="date" formControlName="date" [showIcon]="true" appendTo="body"></p-datePicker>
+        <div class="field mb-4">
+            <label for="date" class="font-semibold text-gray-300 mb-2 block">التاريخ</label>
+            <p-datePicker id="date" formControlName="date" [showIcon]="true" appendTo="body" styleClass="premium-input"></p-datePicker>
         </div>
 
         <div class="grid">
-            <div class="col-6 field mb-3">
-                <label for="type" class="font-bold">النوع</label>
-                <p-select id="type" [options]="typeOptions" formControlName="type" optionLabel="label" optionValue="value" appendTo="body"></p-select>
+            <div class="col-6 field mb-4">
+                <label for="type" class="font-semibold text-gray-300 mb-2 block">النوع</label>
+                <p-select id="type" [options]="typeOptions" formControlName="type" optionLabel="label" optionValue="value" appendTo="body" styleClass="premium-input"></p-select>
             </div>
-            <div class="col-6 field mb-3">
-                <label for="category" class="font-bold">التصنيف</label>
-                <p-select id="category" [options]="categoryOptions" formControlName="category" optionLabel="label" optionValue="value" appendTo="body"></p-select>
+            <div class="col-6 field mb-4">
+                <label for="category" class="font-semibold text-gray-300 mb-2 block">التصنيف</label>
+                <p-select id="category" [options]="categoryOptions" formControlName="category" optionLabel="label" optionValue="value" appendTo="body" styleClass="premium-input"></p-select>
             </div>
         </div>
     </form>
 
     <ng-template pTemplate="footer">
-        <p-button label="إلغاء" icon="pi pi-times" [text]="true" severity="secondary" (onClick)="displayDialog = false"></p-button>
-        <p-button label="حفظ" icon="pi pi-check" [disabled]="transactionForm.invalid" (onClick)="saveTransaction()"></p-button>
+        <div class="flex justify-content-end gap-2 mt-3">
+            <p-button label="إلغاء" icon="pi pi-times" [text]="true" severity="secondary" (onClick)="displayDialog = false"></p-button>
+            <p-button label="حفظ" icon="pi pi-check" styleClass="premium-btn" [disabled]="transactionForm.invalid" (onClick)="saveTransaction()"></p-button>
+        </div>
     </ng-template>
 </p-dialog>

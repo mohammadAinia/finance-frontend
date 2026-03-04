@@ -4,5 +4,17 @@
 body {
     margin: 0;
     font-family: var(--font-family, sans-serif);
-    background-color: var(--surface-ground, #f9fafb);
+    background-color: var(--surface-ground, #09090B);
+}
+/* إعداد الاتجاه من اليمين لليسار */
+:host {
+  display: block;
+  padding: 1.5rem;
+  direction: rtl; /* هذا هو السطر الأهم! */
+  text-align: right;
+}
+
+/* أو إذا كنت تستخدم الحاوية العامة */
+.app-container {
+  direction: rtl;
 }

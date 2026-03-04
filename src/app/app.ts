@@ -11,7 +11,10 @@ import { MenuItem } from 'primeng/api';
 })
 export class App implements OnInit {
   
-  items: MenuItem[] | undefined;
+    items = [
+    { label: 'لوحة التحكم', icon: 'pi pi-home', routerLink: '/dashboard' },
+    { label: 'العمليات المالية', icon: 'pi pi-wallet', routerLink: '/transactions' }
+  ];
 
   ngOnInit() {
     // تجهيز عناصر القائمة العلوية مع ربطها بالمسارات التي أنشأتها

@@ -1,2 +1,168 @@
-:host { display: block; padding: .75rem; }
-.mobile-table :deep(.p-datatable-tbody > tr > td) { padding: .6rem .75rem; }
+:host {
+  display: block;
+  padding: 1.5rem;
+  direction: rtl; /* <--- الأساس لضبط الاتجاه */
+  text-align: right;
+}
+
+/* 1. الكارت الرئيسي */
+::ng-deep .premium-card {
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%) !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(12px);
+}
+
+::ng-deep .premium-card .p-card-title {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* 2. زر الإضافة الفاخر */
+::ng-deep .premium-btn {
+  background: linear-gradient(135deg, rgba(59,130,246,0.9), rgba(37,99,235,0.9)) !important;
+  border: 1px solid rgba(59, 130, 246, 0.4) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2) !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .premium-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* ضبط أيقونة الزر في RTL */
+::ng-deep .premium-btn .p-button-icon-left {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* 3. تصميم الجدول (Table) + تعديلات RTL */
+::ng-deep .premium-table .p-datatable-header,
+::ng-deep .premium-table .p-paginator {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .premium-table .p-datatable-thead > tr > th {
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: #94a3b8 !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 1rem !important;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: right !important; /* RTL */
+}
+
+/* ضبط أيقونات الفرز */
+::ng-deep .premium-table .p-sortable-column .p-sortable-column-icon {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+::ng-deep .premium-table .p-datatable-tbody > tr {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+  transition: background 0.2s ease;
+}
+
+::ng-deep .premium-table .p-datatable-tbody > tr > td {
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+  padding: 1rem !important;
+  text-align: right !important; /* RTL */
+}
+
+::ng-deep .premium-table .p-datatable-tbody > tr > td:last-child {
+  text-align: center !important; /* لعمود الإجراءات */
+}
+
+/* تأثير التمرير على صفوف الجدول */
+::ng-deep .premium-table .p-datatable-tbody > tr:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* 4. تصميم نافذة الإضافة (Dialog) */
+::ng-deep .premium-dialog .p-dialog-header,
+::ng-deep .premium-dialog .p-dialog-content,
+::ng-deep .premium-dialog .p-dialog-footer {
+  background: #0f172a !important; 
+  border: none !important;
+  color: #ffffff !important;
+  direction: rtl; /* RTL للنافذة */
+}
+
+::ng-deep .premium-dialog {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+  overflow: hidden;
+}
+
+::ng-deep .premium-dialog .p-dialog-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  padding: 1.5rem !important;
+}
+/* تعديل زر الإغلاق (X) في النافذة للـ RTL */
+::ng-deep .premium-dialog .p-dialog-header-icons {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+/* 5. تصميم حقول الإدخال (Inputs & Dropdowns) */
+::ng-deep .premium-input,
+::ng-deep .premium-input .p-inputtext {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px !important;
+  color: #ffffff !important;
+  padding: 0.75rem !important;
+  transition: all 0.3s ease;
+  text-align: right; /* RTL */
+}
+
+/* تأثير الـ Focus للحقول */
+::ng-deep .premium-input:focus-within,
+::ng-deep .premium-input .p-inputtext:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* تخصيص أيقونات النوافذ المنبثقة (Dropdown & DatePicker) */
+::ng-deep .p-datepicker,
+::ng-deep .p-dropdown-panel {
+  background: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 12px !important;
+  direction: rtl; /* RTL للقوائم المنسدلة */
+}
+::ng-deep .p-datepicker table td > span,
+::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  color: #e2e8f0 !important;
+}
+::ng-deep .p-datepicker table td > span:hover,
+::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* أزرار الإجراءات داخل الجدول */
+::ng-deep .p-button.p-button-text {
+  color: #94a3b8 !important;
+}
+::ng-deep .p-button.p-button-text.p-button-info:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #60a5fa !important;
+}
+::ng-deep .p-button.p-button-text.p-button-danger:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #fb7185 !important;
+}
