@@ -1,95 +1,111 @@
 <div class="grid kpi-grid">
 
-    <div class="col-12 md:col-4">
-        <p-card styleClass="kpi-card">
-            <div class="flex justify-content-between mb-3">
-                <div>
-                    <span class="block kpi-label mb-2">الرصيد الحالي</span>
-                    <div class="kpi-value">{{ transactionService.totalBalance() | currency:'SAR' }}</div>
-                </div>
+  <div class="col-12 md:col-4">
+    <p-card styleClass="kpi-card kpi-card--glass kpi-card--blue">
+      <div class="kpi-shine"></div>
 
-                <div class="kpi-icon kpi-icon--blue">
-                    <i class="pi pi-wallet"></i>
-                </div>
-            </div>
+      <div class="flex justify-content-between mb-3 kpi-head">
+        <div class="kpi-text">
+          <span class="block kpi-label mb-2">الرصيد الحالي</span>
+          <div class="kpi-value">{{ transactionService.totalBalance() | currency:'SAR' }}</div>
+        </div>
 
-            <div class="kpi-foot">
-                <span class="kpi-change" [ngClass]="balanceChangePct >= 0 ? 'pos' : 'neg'">
-                    {{ balanceChangePct | number:'1.0-0' }}%
-                </span>
-                <span class="kpi-muted">مقارنة بالشهر الماضي</span>
-            </div>
-        </p-card>
-    </div>
+        <div class="kpi-icon">
+          <i class="pi pi-wallet"></i>
+        </div>
+      </div>
 
-    <div class="col-12 md:col-4">
-        <p-card styleClass="kpi-card">
-            <div class="flex justify-content-between mb-3">
-                <div>
-                    <span class="block kpi-label mb-2">إجمالي الدخل</span>
-                    <div class="kpi-value">{{ transactionService.totalIncome() | currency:'SAR' }}</div>
-                </div>
+      <div class="kpi-foot">
+        <span class="kpi-change" [ngClass]="balanceChangePct >= 0 ? 'pos' : 'neg'">
+          {{ balanceChangePct | number:'1.0-0' }}%
+        </span>
+        <span class="kpi-muted">مقارنة بالشهر الماضي</span>
+      </div>
+    </p-card>
+  </div>
 
-                <div class="kpi-icon kpi-icon--green">
-                    <i class="pi pi-arrow-up-right"></i>
-                </div>
-            </div>
+  <div class="col-12 md:col-4">
+    <p-card styleClass="kpi-card kpi-card--glass kpi-card--green">
+      <div class="kpi-shine"></div>
 
-            <div class="kpi-foot">
-                <span class="kpi-change" [ngClass]="incomeChangePct >= 0 ? 'pos' : 'neg'">
-                    {{ incomeChangePct | number:'1.0-0' }}%
-                </span>
-                <span class="kpi-muted">مقارنة بالشهر الماضي</span>
-            </div>
-        </p-card>
-    </div>
+      <div class="flex justify-content-between mb-3 kpi-head">
+        <div class="kpi-text">
+          <span class="block kpi-label mb-2">إجمالي الدخل</span>
+          <div class="kpi-value">{{ transactionService.totalIncome() | currency:'SAR' }}</div>
+        </div>
 
-    <div class="col-12 md:col-4">
-        <p-card styleClass="kpi-card">
-            <div class="flex justify-content-between mb-3">
-                <div>
-                    <span class="block kpi-label mb-2">إجمالي المصروفات</span>
-                    <div class="kpi-value">{{ transactionService.totalExpenses() | currency:'SAR' }}</div>
-                </div>
+        <div class="kpi-icon">
+          <i class="pi pi-arrow-up-right"></i>
+        </div>
+      </div>
 
-                <div class="kpi-icon kpi-icon--red">
-                    <i class="pi pi-arrow-down-right"></i>
-                </div>
-            </div>
+      <div class="kpi-foot">
+        <span class="kpi-change" [ngClass]="incomeChangePct >= 0 ? 'pos' : 'neg'">
+          {{ incomeChangePct | number:'1.0-0' }}%
+        </span>
+        <span class="kpi-muted">مقارنة بالشهر الماضي</span>
+      </div>
+    </p-card>
+  </div>
 
-            <div class="kpi-foot">
-                <!-- المصروفات: إذا زادت تعتبر سلبية -->
-                <span class="kpi-change" [ngClass]="expenseChangePct <= 0 ? 'pos' : 'neg'">
-                    {{ expenseChangePct | number:'1.0-0' }}%
-                </span>
-                <span class="kpi-muted">مقارنة بالشهر الماضي</span>
-            </div>
-        </p-card>
-    </div>
+  <div class="col-12 md:col-4">
+    <p-card styleClass="kpi-card kpi-card--glass kpi-card--red">
+      <div class="kpi-shine"></div>
+
+      <div class="flex justify-content-between mb-3 kpi-head">
+        <div class="kpi-text">
+          <span class="block kpi-label mb-2">إجمالي المصروفات</span>
+          <div class="kpi-value">{{ transactionService.totalExpenses() | currency:'SAR' }}</div>
+        </div>
+
+        <div class="kpi-icon">
+          <i class="pi pi-arrow-down-right"></i>
+        </div>
+      </div>
+
+      <div class="kpi-foot">
+        <span class="kpi-change" [ngClass]="expenseChangePct <= 0 ? 'pos' : 'neg'">
+          {{ expenseChangePct | number:'1.0-0' }}%
+        </span>
+        <span class="kpi-muted">مقارنة بالشهر الماضي</span>
+      </div>
+    </p-card>
+  </div>
 
 </div>
 
-<!-- ✅ قسم المخططات (هذا كان ناقص) -->
 <div class="grid mt-4 charts-grid">
 
-    <div class="col-12 md:col-6">
-        <p-card header="توزيع المصروفات" styleClass="kpi-card h-full">
-            <div class="flex justify-content-center">
-                <p-chart *ngIf="chartData" type="doughnut" [data]="chartData" [options]="chartOptions" width="300px"
-                    height="300px">
-                </p-chart>
-            </div>
-        </p-card>
-    </div>
+  <div class="col-12 md:col-6">
+    <p-card header="توزيع المصروفات" styleClass="kpi-card kpi-card--glass h-full">
+      <div class="kpi-card-headerline"></div>
 
-    <div class="col-12 md:col-6">
-        <p-card header="نظرة عامة على التدفق المالي عبر الزمن" styleClass="kpi-card h-full">
-            <div class="flex justify-content-center w-full" style="min-height: 300px;">
-                <p-chart *ngIf="lineChartData" type="line" [data]="lineChartData" [options]="lineChartOptions"
-                    width="100%" height="300px">
-                </p-chart>
-            </div>
-        </p-card>
-    </div>
+      <div class="flex justify-content-center">
+        <p-chart *ngIf="chartData"
+                 type="doughnut"
+                 [data]="chartData"
+                 [options]="chartOptions"
+                 width="320px"
+                 height="320px">
+        </p-chart>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="col-12 md:col-6">
+    <p-card header="نظرة عامة على التدفق المالي عبر الزمن" styleClass="kpi-card kpi-card--glass h-full">
+      <div class="kpi-card-headerline"></div>
+
+      <div class="flex justify-content-center w-full" style="min-height: 320px;">
+        <p-chart *ngIf="lineChartData"
+                 type="line"
+                 [data]="lineChartData"
+                 [options]="lineChartOptions"
+                 width="100%"
+                 height="320px">
+        </p-chart>
+      </div>
+    </p-card>
+  </div>
 
 </div>
