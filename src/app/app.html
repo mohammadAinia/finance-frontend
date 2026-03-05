@@ -1,9 +1,9 @@
 <div class="min-h-screen app-container">
-    
-    <div class="premium-header-wrapper">
+
+    <div class="premium-header-wrapper" *ngIf="!isAuthPage()">
         <p-menubar [model]="items" styleClass="premium-menubar"></p-menubar>
     </div>
-    
+
     <div class="p-4">
         <router-outlet></router-outlet>
     </div>

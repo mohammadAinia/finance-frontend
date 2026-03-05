@@ -1,21 +1,23 @@
 import { Routes } from '@angular/router';
+import { Login } from './pages/auth/login/login';
+import { authGuard } from './guards/auth-guard';
+import { Register } from './pages/auth/register/register';
 
 export const routes: Routes = [
-  // إعادة التوجيه الافتراضية إلى لوحة التحكم عند فتح التطبيق
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'login', component: Login },
+  { path: 'register', component: Register },
   
-  // التحميل الكسول (Lazy Load) لقسم الـ Dashboard
   { 
     path: 'dashboard', 
+    canActivate: [authGuard], 
     loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule) 
   },
-  
-  // التحميل الكسول (Lazy Load) لقسم العمليات
   { 
     path: 'transactions', 
+    canActivate: [authGuard], 
     loadChildren: () => import('./pages/transactions/transactions.module').then(m => m.TransactionsModule) 
   },
-
-  // في حال أدخل المستخدم رابطاً غير موجود
-  { path: '**', redirectTo: 'dashboard' }
+  
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' }
 ];

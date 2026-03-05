@@ -1,82 +1,86 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
+  private http = inject(HttpClient);
+  
+  // تأكد من المنفذ أنه 3001 كما هو في الباك إند
+  private apiUrl = 'http://localhost:3001/api/transactions';
 
-  // هذا المتغير سيقرأ الرابط من ملف البيئة (محلي أو سحابي) تلقائياً
-  private apiUrl = environment.apiUrl + '/transactions';
-
+  // Signals لتحديث الواجهة تلقائياً
   transactions = signal<any[]>([]);
+  totalBalance = signal<number>(0);
+  totalIncome = signal<number>(0);
+  totalExpenses = signal<number>(0);
 
-  constructor(private http: HttpClient) {
+  constructor() {
+    // جلب البيانات أول ما يشتغل السيرفيس
     this.loadTransactions();
   }
 
-  // 1. جلب البيانات
+  // 👇 دالة مساعدة لجلب التوكن من المتصفح ووضعه في الـ Headers
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  // 1. جلب العمليات المالية من الباك إند
   loadTransactions() {
-    this.http.get<any[]>(this.apiUrl).subscribe({
+    this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() }).subscribe({
       next: (data) => {
         this.transactions.set(data);
+        this.calculateKPIs(data); // تحديث الأرقام العلوية (الكروت)
       },
-      error: (err) => {
-        console.error('❌ حدث خطأ أثناء جلب البيانات من الخادم:', err);
-      }
+      error: (err) => console.error('❌ خطأ في جلب البيانات:', err)
     });
   }
 
-  // 2. تعديل عملية
-  updateTransaction(id: number, updatedTransaction: any) {
-    this.http.put(`${this.apiUrl}/${id}`, updatedTransaction).subscribe({
-      next: () => {
-        this.transactions.update(txs => txs.map(t => t.Id === id ? { ...updatedTransaction, Id: id } : t));
-        console.log('✅ تم التعديل بنجاح');
-      },
-      error: (err) => console.error('❌ خطأ في التعديل:', err)
-    });
-  }
-
-  // 3. حذف عملية
-  deleteTransaction(id: number) {
-    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
-      next: () => {
-        this.transactions.update(txs => txs.filter(t => t.Id !== id));
-        console.log('✅ تم الحذف بنجاح');
-      },
-      error: (err) => console.error('❌ خطأ في الحذف:', err)
-    });
-  }
-
-  // 4. إضافة عملية
+  // 2. إضافة عملية جديدة
   addTransaction(transaction: any) {
-    this.http.post<any>(this.apiUrl, transaction).subscribe({
-      next: (savedTransaction) => {
-        this.transactions.update(currentTransactions => [savedTransaction, ...currentTransactions]);
-        console.log('✅ تم حفظ العملية في قاعدة البيانات بنجاح:', savedTransaction);
-      },
-      error: (err) => {
-        console.error('❌ حدث خطأ أثناء حفظ العملية في الخادم:', err);
-      }
-    });
+    return this.http.post<any>(this.apiUrl, transaction, { headers: this.getHeaders() }).pipe(
+      tap(() => {
+        this.loadTransactions(); // إعادة جلب البيانات لتحديث الجدول بعد الإضافة
+      })
+    );
   }
 
-  // العمليات الحسابية
-  totalIncome = computed(() => {
-    return this.transactions()
-      .filter(t => t.Type === 'income')
-      .reduce((sum, current) => sum + Number(current.Amount), 0);
-  });
+  // 3. تحديث عملية
+  updateTransaction(id: number, transaction: any) {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, transaction, { headers: this.getHeaders() }).pipe(
+      tap(() => this.loadTransactions())
+    );
+  }
 
-  totalExpenses = computed(() => {
-    return this.transactions()
-      .filter(t => t.Type === 'expense')
-      .reduce((sum, current) => sum + Number(current.Amount), 0);
-  });
+  // 4. حذف عملية
+  deleteTransaction(id: number) {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+      tap(() => this.loadTransactions())
+    );
+  }
 
-  totalBalance = computed(() => {
-    return this.totalIncome() - this.totalExpenses();
-  });
+  // 👇 دالة حساب الإجماليات وعرضها في كروت الفخامة العلوية
+  private calculateKPIs(data: any[]) {
+    let income = 0;
+    let expenses = 0;
+
+    data.forEach(t => {
+      // التأكد من تحويل المبلغ لرقم لتجنب الأخطاء
+      const amount = Number(t.Amount);
+      if (t.Type === 'income') {
+        income += amount;
+      } else if (t.Type === 'expense') {
+        expenses += amount;
+      }
+    });
+
+    this.totalIncome.set(income);
+    this.totalExpenses.set(expenses);
+    this.totalBalance.set(income - expenses);
+  }
 }
