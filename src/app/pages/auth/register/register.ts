@@ -49,7 +49,7 @@ export class Register {
 
     const userData = this.registerForm.value;
 
-    this.http.post<any>('http://localhost:3001/api/auth/register', userData).subscribe({
+    this.http.post<any>('https://finance-backend-nvkp.onrender.com/api/auth/register', userData).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.successMessage = 'تم إنشاء الحساب بنجاح! جاري تحويلك لتسجيل الدخول...';

@@ -7,9 +7,9 @@ import { tap } from 'rxjs';
 })
 export class TransactionService {
   private http = inject(HttpClient);
-  
+
   // تأكد من المنفذ أنه 3001 كما هو في الباك إند
-  private apiUrl = 'http://localhost:3001/api/transactions';
+  private apiUrl = 'https://finance-backend-nvkp.onrender.com/api/transactions';
 
   // Signals لتحديث الواجهة تلقائياً
   transactions = signal<any[]>([]);
