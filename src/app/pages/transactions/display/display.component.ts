@@ -13,9 +13,9 @@ export class DisplayComponent implements OnInit {
   // متغيرات النموذج والنافذة
   displayDialog: boolean = false;
   transactionForm!: FormGroup;
-isEditMode: boolean = false;
+  isEditMode: boolean = false;
   currentEditId: number | null = null;
-  
+
 
   // خيارات القوائم المنسدلة
   categoryOptions = [
@@ -49,16 +49,16 @@ isEditMode: boolean = false;
   }
 
   // دالة إظهار النافذة وتصفير النموذج
-showDialog() {
+  showDialog() {
     this.isEditMode = false;
     this.currentEditId = null;
     this.transactionForm.reset({ type: 'expense' });
     this.displayDialog = true;
   }
-editTransaction(tx: any) {
+  editTransaction(tx: any) {
     this.isEditMode = true;
     this.currentEditId = tx.Id;
-    
+
     this.transactionForm.patchValue({
       description: tx.Description,
       amount: tx.Amount,
@@ -66,7 +66,7 @@ editTransaction(tx: any) {
       category: tx.Category,
       type: tx.Type
     });
-    
+
     this.displayDialog = true;
   }
   deleteTransaction(id: number) {
@@ -75,7 +75,7 @@ editTransaction(tx: any) {
     }
   }
   // دالة حفظ العملية الجديدة
-saveTransaction() {
+  saveTransaction() {
     if (this.transactionForm.valid) {
       const formValues = this.transactionForm.value;
       let formattedDate = formValues.date;
@@ -92,11 +92,23 @@ saveTransaction() {
       };
 
       if (this.isEditMode && this.currentEditId) {
-        // إرسال طلب تعديل
-        this.transactionService.updateTransaction(this.currentEditId, txData);
+        // إرسال طلب التعديل مع إضافة subscribe
+        this.transactionService.updateTransaction(this.currentEditId, txData).subscribe({
+          next: (res) => {
+            console.log('تم التعديل بنجاح', res);
+            this.displayDialog = false;
+          },
+          error: (err) => console.error('خطأ في التعديل:', err)
+        });
       } else {
-        // إرسال طلب إضافة
-        this.transactionService.addTransaction(txData);
+        // إرسال طلب الإضافة مع إضافة subscribe
+        this.transactionService.addTransaction(txData).subscribe({
+          next: (res) => {
+            console.log('تمت الإضافة بنجاح', res);
+            this.displayDialog = false;
+          },
+          error: (err) => console.error('خطأ في الإضافة:', err)
+        });
       }
 
       this.displayDialog = false;
