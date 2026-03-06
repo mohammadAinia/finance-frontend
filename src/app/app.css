@@ -53,3 +53,21 @@
 ::ng-deep .premium-menubar.p-menubar {
   border: none;
 }
+/* تصميم مخصص لزر تسجيل الخروج في القائمة */
+::ng-deep .premium-menubar .logout-btn .p-menuitem-text,
+::ng-deep .premium-menubar .logout-btn .p-menuitem-icon {
+  color: #ef4444 !important; /* لون أحمر */
+}
+
+::ng-deep .premium-menubar .logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1) !important; /* خلفية حمراء خفيفة عند الوقوف */
+}
+/* تصميم مخصص لزر ربط الآيفون */
+::ng-deep .premium-menubar .mobile-btn .p-menuitem-text,
+::ng-deep .premium-menubar .mobile-btn .p-menuitem-icon {
+  color: #38bdf8 !important; /* لون أزرق فاتح مميز */
+}
+
+::ng-deep .premium-menubar .mobile-btn:hover {
+  background: rgba(56, 189, 248, 0.1) !important;
+}

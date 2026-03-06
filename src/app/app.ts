@@ -20,11 +20,42 @@ export class App implements OnInit {
   ngOnInit() {
     this.items = [
       { label: 'لوحة التحكم', icon: 'pi pi-home', routerLink: '/dashboard' },
-      { label: 'العمليات المالية', icon: 'pi pi-wallet', routerLink: '/transactions' }
+      { label: 'العمليات المالية', icon: 'pi pi-wallet', routerLink: '/transactions' },
+      // 👇 زر نسخ التوكن لربط الآيفون
+      { 
+        label: 'ربط الآيفون (نسخ الرمز)', 
+        icon: 'pi pi-mobile', 
+        command: () => this.copyTokenForShortcut(),
+        styleClass: 'mobile-btn' 
+      },
+      { 
+        label: 'تسجيل الخروج', 
+        icon: 'pi pi-sign-out', 
+        command: () => this.logout(),
+        styleClass: 'logout-btn'
+      }
     ];
   }
 
-  // 👇 الدالة المحدثة: تخفي الهيدر في كل من صفحة الدخول والتسجيل
+  // 👇 دالة نسخ التوكن مع رسالة توضيحية
+  copyTokenForShortcut() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigator.clipboard.writeText(token).then(() => {
+        alert('✅ تم نسخ رمز الربط (Token) بنجاح!\n\nاذهب إلى اختصار الآيفون، والصقه كالتالي:\nفي قسم Headers (الترويسات):\n- المفتاح: Authorization\n- القيمة: Bearer مسافة ثم الصق الرمز هنا');
+      }).catch(err => {
+        alert('حدث خطأ أثناء النسخ.');
+      });
+    } else {
+      alert('⚠️ الرجاء تسجيل الدخول أولاً لنسخ الرمز.');
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
   isAuthPage(): boolean {
     return this.router.url.includes('login') || this.router.url.includes('register');
   }
