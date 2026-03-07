@@ -56,7 +56,7 @@ export class App implements OnInit {
       alert('✅ تم نسخ الرمز السري بنجاح!\n\nسيتم الآن توجيهك لتحميل الاختصار.\nعندما يطلب منك الآيفون الرمز، فقط اضغط "لصق".');
 
       // توجيه المستخدم إلى رابط الاختصار الموحد
-      const icloudShortcutLink = 'https://www.icloud.com/shortcuts/YOUR_SHORTCUT_ID_HERE';
+      const icloudShortcutLink = 'https://www.icloud.com/shortcuts/eb6fffb1f99c4b10b513c767ff35c3e5';
       window.open(icloudShortcutLink, '_blank');
 
     }).catch(err => {
