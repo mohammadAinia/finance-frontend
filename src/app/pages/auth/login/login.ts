@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router,RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 // استيراد مكونات PrimeNG
 import { CardModule } from 'primeng/card';
@@ -13,12 +13,12 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    HttpClientModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     RouterModule,
-    CardModule, 
-    InputTextModule, 
+    CardModule,
+    InputTextModule,
     ButtonModule
   ],
   templateUrl: './login.html', /* تأكد من امتداد الملف لديك، قد يكون .component.html */
@@ -51,10 +51,13 @@ export class Login {
     // استبدل 3000 بمنفذ الباك إند الخاص بك إذا كان مختلفاً
     this.http.post<any>('https://finance-backend-nvkp.onrender.com/api/auth/login', credentials).subscribe({
       next: (response) => {
-        // 1. حفظ التوكن (Token) في المتصفح لاستخدامه لاحقاً
+        // حفظ التوكن المؤقت للموقع
         localStorage.setItem('token', response.token);
-        
-        // 2. التوجيه إلى لوحة التحكم بعد نجاح الدخول
+
+        // 👇 حفظ التوكن الدائم لاختصارات الجوال
+        localStorage.setItem('mobileToken', response.mobileToken);
+
+        // التوجيه إلى لوحة التحكم
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
